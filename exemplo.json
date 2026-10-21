@@ -1,0 +1,295 @@
+{
+ "conta": "Loja Exemplo Veículos",
+ "periodo": {
+  "rotulo": "últimos 30 dias",
+  "inicio": "2026-09-20",
+  "fim": "2026-10-19"
+ },
+ "atualizado_em": "2026-10-20",
+ "totais": {
+  "investimento": 8241.96,
+  "conversas": 841,
+  "custo_conversa": 9.8,
+  "alcance": 214380,
+  "impressoes": 489102,
+  "frequencia": 2.28,
+  "cliques": 12044,
+  "cliques_link": 4911,
+  "ctr": 2.46
+ },
+ "dias": [
+  {
+   "data": "2026-09-20",
+   "investimento": 244.2,
+   "conversas": 30
+  },
+  {
+   "data": "2026-09-21",
+   "investimento": 329.24,
+   "conversas": 43
+  },
+  {
+   "data": "2026-09-22",
+   "investimento": 299.33,
+   "conversas": 31
+  },
+  {
+   "data": "2026-09-23",
+   "investimento": 175.08,
+   "conversas": 16
+  },
+  {
+   "data": "2026-09-24",
+   "investimento": 169.75,
+   "conversas": 16
+  },
+  {
+   "data": "2026-09-25",
+   "investimento": 178.16,
+   "conversas": 23
+  },
+  {
+   "data": "2026-09-26",
+   "investimento": 270.37,
+   "conversas": 21
+  },
+  {
+   "data": "2026-09-27",
+   "investimento": 192.19,
+   "conversas": 22
+  },
+  {
+   "data": "2026-09-28",
+   "investimento": 323.13,
+   "conversas": 23
+  },
+  {
+   "data": "2026-09-29",
+   "investimento": 310.05,
+   "conversas": 31
+  },
+  {
+   "data": "2026-09-30",
+   "investimento": 413.83,
+   "conversas": 56
+  },
+  {
+   "data": "2026-10-01",
+   "investimento": 383.2,
+   "conversas": 42
+  },
+  {
+   "data": "2026-10-02",
+   "investimento": 197.51,
+   "conversas": 25
+  },
+  {
+   "data": "2026-10-03",
+   "investimento": 240.21,
+   "conversas": 18
+  },
+  {
+   "data": "2026-10-04",
+   "investimento": 206.99,
+   "conversas": 18
+  },
+  {
+   "data": "2026-10-05",
+   "investimento": 326.12,
+   "conversas": 33
+  },
+  {
+   "data": "2026-10-06",
+   "investimento": 302.41,
+   "conversas": 40
+  },
+  {
+   "data": "2026-10-07",
+   "investimento": 175.5,
+   "conversas": 20
+  },
+  {
+   "data": "2026-10-08",
+   "investimento": 336.9,
+   "conversas": 33
+  },
+  {
+   "data": "2026-10-09",
+   "investimento": 241.68,
+   "conversas": 21
+  },
+  {
+   "data": "2026-10-10",
+   "investimento": 277.83,
+   "conversas": 30
+  },
+  {
+   "data": "2026-10-11",
+   "investimento": 366.54,
+   "conversas": 30
+  },
+  {
+   "data": "2026-10-12",
+   "investimento": 223.47,
+   "conversas": 20
+  },
+  {
+   "data": "2026-10-13",
+   "investimento": 296.55,
+   "conversas": 22
+  },
+  {
+   "data": "2026-10-14",
+   "investimento": 349.66,
+   "conversas": 38
+  },
+  {
+   "data": "2026-10-15",
+   "investimento": 414.85,
+   "conversas": 53
+  },
+  {
+   "data": "2026-10-16",
+   "investimento": 268.71,
+   "conversas": 21
+  },
+  {
+   "data": "2026-10-17",
+   "investimento": 199.52,
+   "conversas": 19
+  },
+  {
+   "data": "2026-10-18",
+   "investimento": 170.19,
+   "conversas": 14
+  },
+  {
+   "data": "2026-10-19",
+   "investimento": 358.79,
+   "conversas": 32
+  }
+ ],
+ "anuncios": [
+  {
+   "nome": "Corolla XEi 2020",
+   "campanha": "[WPP] até 100k",
+   "status": "pausado",
+   "conversas": 53,
+   "investimento": 727.91,
+   "ctr": 4.43
+  },
+  {
+   "nome": "Onix LT 2022",
+   "campanha": "[WPP] acima de 100k",
+   "status": "ativo",
+   "conversas": 26,
+   "investimento": 315.08,
+   "ctr": 3.73
+  },
+  {
+   "nome": "HR-V EXL 2021",
+   "campanha": "[WPP] seminovos premium",
+   "status": "ativo",
+   "conversas": 68,
+   "investimento": 723.34,
+   "ctr": 4.79
+  },
+  {
+   "nome": "Compass Longitude 2021",
+   "campanha": "[WPP] até 100k",
+   "status": "ativo",
+   "conversas": 2,
+   "investimento": 9.7,
+   "ctr": 4.98
+  },
+  {
+   "nome": "Hilux SRV 2019",
+   "campanha": "[WPP] acima de 100k",
+   "status": "pausado",
+   "conversas": 2,
+   "investimento": 31.01,
+   "ctr": 2.85
+  },
+  {
+   "nome": "T-Cross 200TSI 2022",
+   "campanha": "[WPP] seminovos premium",
+   "status": "ativo",
+   "conversas": 2,
+   "investimento": 18.8,
+   "ctr": 4.81
+  },
+  {
+   "nome": "Civic Touring 2018",
+   "campanha": "[WPP] até 100k",
+   "status": "ativo",
+   "conversas": 64,
+   "investimento": 406.57,
+   "ctr": 2.0
+  },
+  {
+   "nome": "Renegade Sport 2020",
+   "campanha": "[WPP] acima de 100k",
+   "status": "ativo",
+   "conversas": 43,
+   "investimento": 207.49,
+   "ctr": 5.32
+  },
+  {
+   "nome": "Creta Prestige 2022",
+   "campanha": "[WPP] seminovos premium",
+   "status": "pausado",
+   "conversas": 51,
+   "investimento": 483.14,
+   "ctr": 5.84
+  },
+  {
+   "nome": "Toro Freedom 2021",
+   "campanha": "[WPP] até 100k",
+   "status": "ativo",
+   "conversas": 52,
+   "investimento": 266.66,
+   "ctr": 3.69
+  },
+  {
+   "nome": "Kicks SL 2023",
+   "campanha": "[WPP] acima de 100k",
+   "status": "ativo",
+   "conversas": 2,
+   "investimento": 30.94,
+   "ctr": 5.81
+  },
+  {
+   "nome": "Tracker Premier 2021",
+   "campanha": "[WPP] seminovos premium",
+   "status": "ativo",
+   "conversas": 26,
+   "investimento": 205.35,
+   "ctr": 3.52
+  }
+ ],
+ "campanhas": [
+  {
+   "nome": "[WPP] até 100k",
+   "status": "ativo",
+   "investimento": 3791.3,
+   "conversas": 437
+  },
+  {
+   "nome": "[WPP] acima de 100k",
+   "status": "ativo",
+   "investimento": 2802.27,
+   "conversas": 260
+  },
+  {
+   "nome": "[WPP] seminovos premium",
+   "status": "pausado",
+   "investimento": 1648.39,
+   "conversas": 142
+  }
+ ],
+ "dicas": [
+  "Exemplo: a campanha seminovos premium está pausada com o maior custo por conversa; mantenha pausada e reaproveite os criativos que funcionaram.",
+  "Exemplo: passe parte da verba para [WPP] até 100k, que tem o menor custo por conversa.",
+  "Exemplo: troque os 2 anúncios mais caros por fotos novas dos carros que mais trouxeram conversa."
+ ]
+}

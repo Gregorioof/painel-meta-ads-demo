@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel Meta Ads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+  // ===== CONFIGURAÇÃO: cole aqui os 2 dados do seu projeto Supabase (Project Settings › API Keys) =====
+  window.PAINEL = {
+    SUPABASE_URL: "COLE_AQUI_A_PROJECT_URL",          // ex.: https://abcdefgh.supabase.co
+    SUPABASE_KEY: "COLE_AQUI_A_PUBLISHABLE_KEY"       // começa com sb_publishable_  (nunca use a secret key)
+  };
+</script>
+<style>
+:root{--bg:#07090d;--bg2:#0c1017;--card:#10151e;--card2:#141b26;--line:#1f2835;--txt:#e9eef5;--mut:#8592a6;--mut2:#5d6879;
+--verde:#2ee59d;--ambar:#ffb547;--verm:#ff5c7a;--azul:#5aa9ff;--r:18px}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:radial-gradient(1200px 600px at 80% -10%,#10233a 0,transparent 60%),radial-gradient(900px 500px at -10% 10%,#0f2a22 0,transparent 55%),var(--bg);
+color:var(--txt);font:15px/1.45 Inter,system-ui,sans-serif;min-height:100vh}
+.mono{font-family:"JetBrains Mono",monospace}
+.wrap{max-width:1320px;margin:0 auto;padding:28px 20px 60px}
+/* login */
+#login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.caixa{width:100%;max-width:380px;background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:22px;padding:34px 28px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--verde),var(--azul));display:grid;place-items:center;font-weight:800;color:#06110c;margin-bottom:18px}
+.caixa h1{font-size:22px;margin-bottom:6px}.caixa p{color:var(--mut);font-size:14px;margin-bottom:22px}
+label{display:block;font-size:12px;color:var(--mut);margin:12px 0 6px;letter-spacing:.04em;text-transform:uppercase}
+input{width:100%;background:#0a0e14;border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--txt);font:inherit;outline:none}
+input:focus{border-color:var(--verde);box-shadow:0 0 0 3px rgba(46,229,157,.15)}
+.bt{width:100%;margin-top:20px;padding:13px;border:0;border-radius:12px;background:var(--verde);color:#04140c;font:700 15px Inter;cursor:pointer}
+.bt:disabled{opacity:.6;cursor:wait}
+.erro{color:var(--verm);font-size:13px;margin-top:12px;min-height:18px}
+.ok-msg{color:var(--verde);font-size:13.5px;margin-top:12px}
+/* topo */
+header{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
+.kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--verde);font-weight:700}
+header h2{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-top:4px}
+.sub{color:var(--mut);font-size:14px;margin-top:4px}
+.acoes{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:999px;padding:7px 12px;font-size:12px;color:var(--mut)}
+.chip b{color:var(--txt)}.chip.ok{color:var(--verde);border-color:rgba(46,229,157,.35)}
+.sair{background:none;border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:7px 14px;font:600 12px Inter;cursor:pointer}
+.sair:hover{color:var(--txt);border-color:var(--mut2)}
+/* kpis */
+.kpis{display:grid;grid-template-columns:1.7fr repeat(5,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 14px;position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--c,var(--line))}
+.kpi .n{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.kpi .v{font-size:clamp(18px,1.65vw,25px);white-space:nowrap;font-weight:800;margin:8px 0 4px;letter-spacing:-.01em;color:var(--c,var(--txt))}
+.kpi .d{font-size:12px;color:var(--mut2)}
+.kpi.dest{background:linear-gradient(135deg,rgba(46,229,157,.14),rgba(90,169,255,.06) 60%,var(--card));border-color:rgba(46,229,157,.3)}
+.kpi.dest .v{font-size:clamp(30px,3.4vw,42px)}
+/* blocos */
+.bloco{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 14px;margin-bottom:16px}
+.bh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.bh h3{font-size:16px;font-weight:700}
+.seg{display:flex;background:#0a0e14;border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{background:none;border:0;color:var(--mut);font:600 12px Inter;padding:6px 11px;border-radius:7px;cursor:pointer}
+.seg button.on{background:var(--card2);color:var(--txt);box-shadow:0 0 0 1px var(--line)}
+.graf{position:relative;height:300px}
+.dois{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut2);font-weight:600;padding:8px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:11px 8px;border-bottom:1px solid rgba(31,40,53,.6);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;white-space:nowrap}
+.pos{color:var(--mut2);width:28px}
+.nome{font-weight:600}.camp{color:var(--mut2);font-size:12px;margin-top:2px}
+.tag{display:inline-block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:6px;margin-left:6px;vertical-align:middle;background:rgba(255,255,255,.05);color:var(--mut)}
+.tag.ativo{background:rgba(46,229,157,.12);color:var(--verde)}
+.barra{height:6px;border-radius:9px;background:#0a0e14;overflow:hidden;min-width:60px}
+.barra i{display:block;height:100%;border-radius:9px;background:var(--verde)}
+.custo{font-family:"JetBrains Mono",monospace;font-size:12.5px;padding:3px 7px;border-radius:7px}
+.c-bom{background:rgba(46,229,157,.12);color:var(--verde)}.c-med{background:rgba(255,181,71,.12);color:var(--ambar)}.c-ruim{background:rgba(255,92,122,.12);color:var(--verm)}
+.camps .it{padding:10px 0;border-bottom:1px solid rgba(31,40,53,.6)}.camps .it:last-child{border:0}
+.camps .l1{display:flex;justify-content:space-between;gap:10px;font-size:13.5px}
+.camps .l2{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--mut2);margin-top:6px}
+.camps .barra i{background:linear-gradient(90deg,var(--ambar),#ffd58a)}
+.dicas li{list-style:none;display:flex;gap:12px;padding:12px 0;border-bottom:1px solid rgba(31,40,53,.6)}
+.dicas li:last-child{border:0}
+.dicas .k{flex:0 0 26px;height:26px;border-radius:8px;background:rgba(90,169,255,.14);color:var(--azul);display:grid;place-items:center;font-weight:800;font-size:13px}
+.rodape{color:var(--mut2);font-size:12px;text-align:center;margin-top:26px}
+.vazio{color:var(--mut);text-align:center;padding:50px 10px}
+.tab-scroll{overflow-x:auto}
+@media (max-width:1050px){.kpis{grid-template-columns:repeat(3,1fr)}.kpi.dest{grid-column:1/-1}.dois{grid-template-columns:1fr}}
+@media (max-width:560px){.wrap{padding:20px 14px 40px}.kpis{grid-template-columns:1fr 1fr}.kpi.dest{grid-column:1/-1}.graf{height:240px}
+.esconde-cel{display:none}td,th{padding:9px 5px}}
+</style>
+</head>
+<body>
+<section id="login" hidden>
+  <form class="caixa" id="fLogin">
+    <div class="logo">M</div>
+    <h1>Painel Meta Ads</h1>
+    <p>Digite o seu e-mail. Você recebe um link de acesso na caixa de entrada (sem senha).</p>
+    <label for="email">E-mail</label><input id="email" type="email" autocomplete="email" required>
+    <button class="bt" id="btEntrar">Receber link de acesso</button>
+    <div class="ok-msg" id="okMsg"></div>
+    <div class="erro" id="erro"></div>
+  </form>
+</section>
+
+<main id="painel" class="wrap" hidden>
+  <header>
+    <div>
+      <div class="kick">Meta Ads · painel</div>
+      <h2 id="conta">—</h2>
+      <div class="sub" id="periodo"></div>
+    </div>
+    <div class="acoes">
+      <span class="chip ok">● só leitura</span>
+      <span class="chip" id="atual"></span>
+      <button class="sair" id="btSair">Sair</button>
+    </div>
+  </header>
+  <section class="kpis" id="kpis"></section>
+  <section class="bloco">
+    <div class="bh"><h3>Investimento e conversas por dia</h3>
+      <div class="seg" id="segGraf"><button class="on" data-m="conv">conversas</button><button data-m="custo">custo/conversa</button></div></div>
+    <div class="graf"><canvas id="cv"></canvas></div>
+  </section>
+  <div class="dois">
+    <section class="bloco">
+      <div class="bh"><h3>Ranking de anúncios</h3>
+        <div class="seg" id="segRank"><button class="on" data-f="todos">todos</button><button data-f="ativo">ativos</button><button data-f="barato">mais baratos</button></div></div>
+      <div class="tab-scroll"><table><thead><tr><th>#</th><th>Anúncio</th><th class="esconde-cel">Conversas</th><th class="num">Conv.</th><th class="num">Custo/conv.</th><th class="num esconde-cel">Investido</th><th class="num esconde-cel">CTR</th></tr></thead>
+      <tbody id="rank"></tbody></table></div>
+    </section>
+    <div>
+      <section class="bloco"><div class="bh"><h3>Por campanha</h3></div><div class="camps" id="camps"></div></section>
+      <section class="bloco"><div class="bh"><h3>O que melhorar</h3></div><ul class="dicas" id="dicas"></ul></section>
+    </div>
+  </div>
+  <p class="rodape">Dados lidos da Meta pelo Claude, só leitura. Nada aqui altera a sua conta.</p>
+</main>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const brl = (v) => (Number(v) || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  const int = (v) => Math.round(Number(v) || 0).toLocaleString("pt-BR");
+  const pct = (v) => (Number(v) || 0).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + "%";
+  const dt = (s) => { if (!s) return ""; const d = new Date(s.length <= 10 ? s + "T12:00:00" : s); return d.toLocaleDateString("pt-BR"); };
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const cfg = window.PAINEL || {};
+  const demo = new URLSearchParams(location.search).has("demo") || location.hash === "#demo";
+  let sb = null, dados = null, chart = null, modoGraf = "conv", filtro = "todos";
+
+  function mostrar(qual) { $("login").hidden = qual !== "login"; $("painel").hidden = qual !== "painel"; }
+
+  function faixaCusto(c, media) { if (!c) return "c-med"; if (c <= media * 0.8) return "c-bom"; if (c <= media * 1.25) return "c-med"; return "c-ruim"; }
+
+  function kpis(t) {
+    const box = $("kpis"); box.replaceChildren();
+    const itens = [
+      ["Custo por conversa", brl(t.custo_conversa), "média do período", "var(--verde)", true],
+      ["Investimento", brl(t.investimento), brl(t.investimento / Math.max(1, (dados.dias || []).length)) + " por dia", "var(--ambar)"],
+      ["Conversas no WhatsApp", int(t.conversas), (t.conversas / Math.max(1, (dados.dias || []).length)).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " por dia", "var(--verde)"],
+      ["Alcance", int(t.alcance), "frequência " + (Number(t.frequencia) || 0).toLocaleString("pt-BR", { maximumFractionDigits: 2 })],
+      ["Cliques", int(t.cliques), int(t.cliques_link) + " no link"],
+      ["CTR", pct(t.ctr), int(t.impressoes) + " impressões"]
+    ];
+    for (const [n, v, d, c, dest] of itens) {
+      const k = el("div", "kpi" + (dest ? " dest" : "")); if (c) k.style.setProperty("--c", c);
+      k.append(el("div", "n", n), el("div", "v", v), el("div", "d", d)); box.append(k);
+    }
+  }
+
+  function grafico() {
+    const dias = dados.dias || [];
+    const labels = dias.map((d) => dt(d.data).slice(0, 5));
+    const inv = dias.map((d) => d.investimento);
+    const linha = modoGraf === "conv" ? dias.map((d) => d.conversas) : dias.map((d) => (d.conversas ? +(d.investimento / d.conversas).toFixed(2) : null));
+    if (chart) chart.destroy();
+    Chart.defaults.color = "#8592a6"; Chart.defaults.font.family = "Inter";
+    chart = new Chart($("cv"), {
+      data: { labels, datasets: [
+        { type: "bar", label: "investimento", data: inv, yAxisID: "y", backgroundColor: "rgba(255,181,71,.55)", hoverBackgroundColor: "#ffb547", borderRadius: 6, maxBarThickness: 26 },
+        { type: "line", label: modoGraf === "conv" ? "conversas" : "custo/conversa", data: linha, yAxisID: "y2", borderColor: "#2ee59d", backgroundColor: "rgba(46,229,157,.12)", fill: true, tension: .35, pointRadius: 2.5, pointHoverRadius: 5, spanGaps: true }
+      ] },
+      options: { responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
+        plugins: { legend: { labels: { boxWidth: 10, boxHeight: 10, usePointStyle: true } },
+          tooltip: { callbacks: { label: (c) => c.dataset.label + ": " + (c.dataset.yAxisID === "y" || modoGraf === "custo" ? brl(c.raw) : int(c.raw)) } } },
+        scales: { x: { grid: { display: false } },
+          y: { grid: { color: "rgba(31,40,53,.6)" }, ticks: { callback: (v) => "R$" + int(v) } },
+          y2: { position: "right", grid: { display: false }, ticks: { callback: (v) => modoGraf === "conv" ? int(v) : "R$" + v } } } }
+    });
+  }
+
+  function ranking() {
+    const t = dados.totais || {}; const media = t.custo_conversa || 1;
+    let lista = (dados.anuncios || []).map((a) => ({ ...a, custo: a.conversas ? a.investimento / a.conversas : 0 }));
+    if (filtro === "ativo") lista = lista.filter((a) => a.status === "ativo");
+    if (filtro === "barato") lista = lista.filter((a) => a.conversas >= 3).sort((a, b) => a.custo - b.custo);
+    else lista.sort((a, b) => b.conversas - a.conversas);
+    const max = Math.max(1, ...lista.map((a) => a.conversas)); const tb = $("rank"); tb.replaceChildren();
+    if (!lista.length) { const tr = el("tr"); const td = el("td", "vazio", "Nenhum anúncio neste filtro."); td.colSpan = 7; tr.append(td); tb.append(tr); return; }
+    lista.slice(0, 15).forEach((a, i) => {
+      const tr = el("tr"); const nome = el("td"); const n = el("div", "nome", a.nome);
+      n.append(el("span", "tag" + (a.status === "ativo" ? " ativo" : ""), a.status || "")); nome.append(n, el("div", "camp", a.campanha || ""));
+      const bar = el("td", "esconde-cel"); const b = el("div", "barra"); const f = el("i"); f.style.width = (a.conversas / max * 100) + "%"; b.append(f); bar.append(b);
+      const cc = el("td", "num"); cc.append(el("span", "custo " + faixaCusto(a.custo, media), a.conversas ? brl(a.custo) : "—"));
+      tr.append(el("td", "pos", String(i + 1)), nome, bar, el("td", "num mono", int(a.conversas)), cc, el("td", "num esconde-cel", brl(a.investimento)), el("td", "num esconde-cel", pct(a.ctr)));
+      tb.append(tr);
+    });
+  }
+
+  function campanhas() {
+    const box = $("camps"); box.replaceChildren(); const lista = [...(dados.campanhas || [])].sort((a, b) => b.investimento - a.investimento);
+    const max = Math.max(1, ...lista.map((c) => c.investimento)); const media = (dados.totais || {}).custo_conversa || 1;
+    for (const c of lista) {
+      const it = el("div", "it"); const l1 = el("div", "l1"); const nm = el("span", "nome", c.nome);
+      if (c.status === "ativo") nm.append(el("span", "tag ativo", "ativo"));
+      l1.append(nm, el("span", "mono", int(c.conversas) + " conv."));
+      const b = el("div", "barra"); const f = el("i"); f.style.width = (c.investimento / max * 100) + "%"; b.append(f);
+      const custo = c.conversas ? c.investimento / c.conversas : 0; const l2 = el("div", "l2");
+      l2.append(el("span", "", brl(c.investimento)), el("span", "custo " + faixaCusto(custo, media), c.conversas ? brl(custo) + "/conv." : "sem conversa"));
+      it.append(l1, b, l2); box.append(it);
+    }
+  }
+
+  function dicas() {
+    const ul = $("dicas"); ul.replaceChildren(); const l = dados.dicas || [];
+    if (!l.length) { ul.append(el("li", "", "Peça as dicas ao Claude na próxima atualização.")); return; }
+    l.forEach((d, i) => { const li = el("li"); li.append(el("span", "k", String(i + 1)), el("span", "", d)); ul.append(li); });
+  }
+
+  function render() {
+    $("conta").textContent = dados.conta || "Sua conta";
+    const p = dados.periodo || {}; $("periodo").textContent = (p.rotulo ? p.rotulo + " · " : "") + dt(p.inicio) + " a " + dt(p.fim);
+    $("atual").replaceChildren("atualizado em ", el("b", "", dt(dados.atualizado_em)));
+    kpis(dados.totais || {}); grafico(); ranking(); campanhas(); dicas();
+  }
+
+  async function carregar() {
+    if (demo) { dados = await (await fetch("exemplo.json")).json(); mostrar("painel"); render(); return; }
+    const { data, error } = await sb.from("painel").select("dados, atualizado_em").eq("id", "principal").maybeSingle();
+    if (error) throw error;
+    mostrar("painel");
+    if (!data) { $("kpis").replaceChildren(el("div", "vazio", "Ainda não há dados. Cole o código de atualização no SQL Editor do Supabase.")); return; }
+    dados = data.dados; dados.atualizado_em = dados.atualizado_em || data.atualizado_em; render();
+  }
+
+  $("segGraf").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; modoGraf = b.dataset.m;
+    [...e.currentTarget.children].forEach((x) => x.classList.toggle("on", x === b)); grafico(); });
+  $("segRank").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; filtro = b.dataset.f;
+    [...e.currentTarget.children].forEach((x) => x.classList.toggle("on", x === b)); ranking(); });
+
+  $("fLogin").addEventListener("submit", async (e) => {
+    e.preventDefault(); $("erro").textContent = ""; $("okMsg").textContent = ""; $("btEntrar").disabled = true;
+    const { error } = await sb.auth.signInWithOtp({ email: $("email").value.trim(),
+      options: { shouldCreateUser: false, emailRedirectTo: location.origin + location.pathname } });
+    $("btEntrar").disabled = false;
+    if (error) { $("erro").textContent = /signups|not allowed|not found/i.test(error.message) ? "Esse e-mail não tem acesso. Cadastre ele em Authentication › Users no Supabase." : "Não deu para enviar agora. Espere 1 minuto e tente de novo."; return; }
+    $("okMsg").textContent = "Pronto! Abra o seu e-mail e clique no link para entrar (pode cair no spam).";
+  });
+  $("btSair").addEventListener("click", async () => { if (sb) await sb.auth.signOut(); location.reload(); });
+
+  (async function iniciar() {
+    if (demo) return carregar();
+    if (!/^https:\/\/.+\.supabase\.co\/?$/.test(cfg.SUPABASE_URL || "") || !cfg.SUPABASE_KEY || cfg.SUPABASE_KEY.startsWith("COLE")) {
+      mostrar("login"); $("erro").textContent = "Falta configurar: cole a Project URL e a Publishable key no topo do index.html."; return;
+    }
+    if (/^sb_secret_|service_role/.test(cfg.SUPABASE_KEY)) { mostrar("login"); $("erro").textContent = "Essa é a chave secreta! Use a Publishable key."; return; }
+    sb = supabase.createClient(cfg.SUPABASE_URL.replace(/\/$/, ""), cfg.SUPABASE_KEY);
+    let carregou = false;
+    const entrar = () => { if (carregou) return; carregou = true; carregar().catch(() => { carregou = false; mostrar("login"); $("erro").textContent = "Entrou, mas não conseguiu ler os dados. Confira a tabela no Supabase."; }); };
+    sb.auth.onAuthStateChange((_ev, sessao) => { if (sessao) entrar(); });
+    const { data } = await sb.auth.getSession();
+    if (data.session) entrar(); else mostrar("login");
+  })();
+})();
+</script>
+</body>
+</html>
